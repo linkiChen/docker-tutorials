@@ -1,0 +1,57 @@
+version: "3.8"
+
+networks:
+  docker:
+
+volumes:
+  data:
+
+services:
+  # 员工服务
+  employee:
+    build:
+      context: ./employee
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    networks:
+      - docker
+  # 部门服务
+  department:
+    build:
+      context: ./department
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    networks:
+      - docker
+  # 网关服务
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    networks:
+      - docker
+  nacos:
+    image: nacos/nacos-server:1.4.1
+    ports:
+      - "8848:8848"
+    environment:
+      - "MODE=standalone"
+    networks:
+      - docker
+
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      - "MYSQL_ROOT_PASSWORD=root"
+      - "MYSQL_DATABASE=docker"
+    volumes:
+      - data:/var/lib/mysql
+      - ./docker.sql://docker-entrypoint-initdb.d/docker.sql
+    networks:
+      - docker

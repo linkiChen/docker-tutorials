@@ -1,0 +1,23 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: EMPLOYEE-SERVICE
+  cloud:
+    nacos:
+      server-addr: 192.168.56.110:8848
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.56.110:3306/docker?useSSL=false&characterEncoding=UTF-8
+    username: root
+    password: root
+
+mybatis-plus:
+  type-aliases-package: com.docker.employee.entities
+  mapper-locations: classpath*:mappers/*.xml
+
+logging:
+  level:
+    com:
+      docker: debug

@@ -1,0 +1,18 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: GATEWAY-SERVICE
+  cloud:
+    nacos:
+      server-addr: 192.168.56.110:8848
+    gateway:
+      routes:
+        - id: employee_route
+          uri: lb://EMPLOYEE-SERVICE
+          predicates:
+            - Path=/employee/**
+        - id: department_route
+          uri: lb://DEPARTMENT-SERVICE
+          predicates:
+            - Path=/dept/**
